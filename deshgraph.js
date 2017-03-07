@@ -10,16 +10,12 @@ var rows = 1;
 function start() {
   var i;
 
-  for (i = 0; i < axes.length; ++i)
-  {
+  for (i = 0; i < axes.length; ++i) {
     sortedAxes[i] = axes[i];
-    if (axes[i].vertical)
-    {
+    if (axes[i].vertical) {
       axes[i].span = rows;
       rows *= axes[i].valuesCount;
-    }
-    else
-    {
+    } else {
       axes[i].span = cols;
       cols *= axes[i].valuesCount;
     }
@@ -32,8 +28,7 @@ function start() {
   });
 
   sortedAxes[0].digitWeight = 1;
-  for (i = 1; i < sortedAxes.length; ++i)
-  {
+  for (i = 1; i < sortedAxes.length; ++i) {
     sortedAxes[i].digitWeight = sortedAxes[i - 1].digitWeight * sortedAxes[i - 1].valuesCount;
   }
 
@@ -49,8 +44,7 @@ canvas.onclick = function (e) {
   var i;
   var j;
   var index = 0;
-  for ( i = 0; i < sortedAxes.length; ++i)
-  {
+  for (i = 0; i < sortedAxes.length; ++i) {
     j = (sortedAxes[i].vertical ? row : col) / sortedAxes[i].span % sortedAxes[i].valuesCount;
     if (!sortedAxes[i].forward) {
       j = sortedAxes[i].valuesCount - 1 - j;
