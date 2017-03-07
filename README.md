@@ -1,4 +1,4 @@
 # deshgraph
-Draw a graph of multivariable function in a deshgram
+Draw a graph of multivariable function on a deshgram
 
-Try this [online](http://deshgrammer.ru/deshgraph)
+Try it [online](http://deshgrammer.ru/deshgraph)
