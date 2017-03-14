@@ -1,7 +1,6 @@
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
-var expression = '0';
 var axes = [];
 var sortedAxes = [];
 var cols = 1;
@@ -89,6 +88,7 @@ function messageHandler(e) {
     worker.postMessage(getNextRect(message.index));
   } else if (message.type === 'error') {
     if (message.index === 0) {
+      document.getElementById('form').style.display = 'block';
       alert('Something wrong with expression or you did not add all axes');
     }
     worker.postMessage({ type: 'done' });
@@ -109,7 +109,12 @@ function createWorkers() {
     worker = new Worker('deshgraph-worker.js');
     currentRectIndex[i] = i - totalWorkers;
     worker.onmessage = messageHandler;
-    worker.postMessage({type: 'init', index: i, sortedAxes: sortedAxes, expression: expression});
+    worker.postMessage({
+      type: 'init',
+      index: i,
+      sortedAxes: sortedAxes,
+      expression: document.getElementById('expr').value
+    });
   }
 }
 
@@ -128,7 +133,6 @@ document.getElementById('form').onsubmit = function (e) {
   }
 
   e.target.style.display = 'none';
-  expression = document.getElementById('expr').value;
   start();
   createWorkers();
 };
