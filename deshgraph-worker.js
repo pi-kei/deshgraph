@@ -35,16 +35,14 @@ function calculate(col, row) {
   var funcMin = Number.POSITIVE_INFINITY;
   var funcMax = Number.NEGATIVE_INFINITY;
   var funcValue;
-  for (i = 0; i < sortedAxes.length; ++i)
-  {
+  for (i = 0; i < sortedAxes.length; ++i) {
     j = (sortedAxes[i].vertical ? row : col) / sortedAxes[i].span % sortedAxes[i].valuesCount;
     if (!sortedAxes[i].forward) {
       j = sortedAxes[i].valuesCount - 1 - j;
     }
     values[i] = sortedAxes[i].startValue + j * sortedAxes[i].delta;
   }
-  for (i = 0; i < iterations; ++i)
-  {
+  for (i = 0; i < iterations; ++i) {
     for (j = 0; j < sortedAxes.length; ++j) {
       scope[sortedAxes[j].name] = values[j] + ((i >>> j) & 1) * sortedAxes[j].delta;
     }
@@ -53,6 +51,28 @@ function calculate(col, row) {
     if (funcValue > funcMax) funcMax = funcValue;
   }
   return funcMin <= 0.0 && funcMax >= 0.0;
+}
+
+function checkGrid(col, row) {
+  var i;
+  var j;
+  var valueMin;
+  var valueMax;
+  for (i = 0; i < sortedAxes.length; ++i) {
+    if (sortedAxes[i].span !== 1) {
+      continue;
+    }
+    j = (sortedAxes[i].vertical ? row : col) / sortedAxes[i].span % sortedAxes[i].valuesCount;
+    if (!sortedAxes[i].forward) {
+      j = sortedAxes[i].valuesCount - 1 - j;
+    }
+    valueMin = sortedAxes[i].startValue + j * sortedAxes[i].delta;
+    valueMax = valueMin + sortedAxes[i].delta;
+    if (valueMin <= 0.0 && valueMax >= 0.0) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function drawRect(message) {
@@ -68,6 +88,8 @@ function drawRect(message) {
     for (j = 0; j < h; ++j) {
       if (calculate(x + i, y + j)) {
         data[(j * w + i) * 4 + 3] = 255;
+      } else if (checkGrid(x + i, y + j)) {
+        data[(j * w + i) * 4 + 3] = 63;
       }
     }
   }
