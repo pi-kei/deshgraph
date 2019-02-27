@@ -1,4 +1,4 @@
-importScripts('http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.9.3/math.min.js');
+importScripts('http://cdnjs.cloudflare.com/ajax/libs/mathjs/5.5.0/math.min.js');
 
 var sortedAxes;
 var iterations;
